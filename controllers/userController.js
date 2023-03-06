@@ -107,7 +107,7 @@ const loginUser = asyncHandler( async (req, res) => {
         throw new Error("Invalid email or password");
     }
 
-})
+});
 
 // Logout User
 const logout = asyncHandler (async ( req, res) => {
@@ -120,10 +120,15 @@ const logout = asyncHandler (async ( req, res) => {
     });
     return res.status(200).json({ message: "Successfully Logged Out" })
 
+});
+
+const getUser = asyncHandler ( async (req, res) => {
+    res.send("get User Data");
 })
 
 module.exports = {
     registerUser,
     loginUser,
-    logout
+    logout,
+    getUser
 }
