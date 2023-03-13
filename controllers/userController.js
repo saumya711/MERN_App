@@ -153,7 +153,7 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // Get Login Status
-const loginStatus = asyncHandler(async (req, res) => {
+const loginStatus = asyncHandler(async (req, res) => { 
 
     const token = req.cookies.token;
     if(!token){
@@ -168,10 +168,16 @@ const loginStatus = asyncHandler(async (req, res) => {
     res.json(false);
 });
 
+// Update User
+const updateUser = asyncHandler(async (req, res) => { 
+    res.send("Update User");
+});
+
 module.exports = {
     registerUser,
     loginUser,
     logout,
     getUser,
-    loginStatus
+    loginStatus,
+    updateUser
 }
