@@ -88,7 +88,6 @@ const loginUser = asyncHandler(async (req, res) => {
   
     //   Generate Token
     const token = generateToken(user._id);
-    console.log("token", token);
     
     if(passwordIsCorrect){
      // Send HTTP-only cookie
@@ -99,8 +98,6 @@ const loginUser = asyncHandler(async (req, res) => {
       sameSite: "none",
       secure: false,
     });
-
-    console.log("token2", token)
   }
     if (user && passwordIsCorrect) {
       const { _id, name, email, photo, phone, bio } = user;
@@ -153,7 +150,7 @@ const getUser = asyncHandler(async (req, res) => {
 });
 
 // Get Login Status
-const loginStatus = asyncHandler(async (req, res) => {
+const loginStatus = asyncHandler(async (req, res) => { 
 
     const token = req.cookies.token;
     if(!token){
@@ -168,10 +165,38 @@ const loginStatus = asyncHandler(async (req, res) => {
     res.json(false);
 });
 
+// Update User
+const updateUser = asyncHandler(async (req, res) => { 
+    const user = await User.findById(req.user._id);
+
+    if(user) {
+      const { name, email, photo, phone, bio } = user;
+      user.email = email;
+      user.name = req.body.name || name;
+      user.phone = req.body.phone || phone;
+      user.bio = req.body.bio || bio;
+      user.photo = req.body.photo || photo;
+
+      const updatedUser = await user.save()
+      res.status(200).json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        photo: updatedUser.photo,
+        phone: updatedUser.phone,
+        bio: updatedUser.bio,
+      })
+    } else{
+      res.status(400)
+      throw  new Error("User not found")
+    }
+});
+
 module.exports = {
     registerUser,
     loginUser,
     logout,
     getUser,
-    loginStatus
+    loginStatus,
+    updateUser
 }
