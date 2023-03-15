@@ -6,7 +6,8 @@ const {
     logout, 
     getUser, 
     loginStatus, 
-    updateUser 
+    updateUser, 
+    changePassword
 } = require("../controllers/userController");
 const protect = require("../middleWare/authMiddleware");
 
@@ -17,5 +18,6 @@ router.get("/logout", logout);
 router.get("/get-user", protect, getUser);
 router.get("/loggedin", loginStatus);
 router.patch("/update-user", protect, updateUser);
+router.patch("/change-password", protect, changePassword);
 
 module.exports = router;
