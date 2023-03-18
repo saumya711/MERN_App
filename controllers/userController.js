@@ -260,6 +260,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
       <p>Regards...</p>
       <p>Pinvent Team</p>
     `;
+    const subject = "Password Reset Request"
 
   res.send("Forgot Password");
 });
