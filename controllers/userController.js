@@ -261,8 +261,17 @@ const forgotPassword = asyncHandler(async (req, res) => {
       <p>Pinvent Team</p>
     `;
     const subject = "Password Reset Request"
+    const send_to = user.email
+    const sent_from = process.env.EMAIL_USER
 
-  res.send("Forgot Password");
+    try {
+      await sendEmail(subject, message, send_to, sent_from)
+      res.status(200).json({success: true, message: "Reset Email Sent"});
+    } catch (error) {
+      res.status(500);
+      throw new Error("Email not sent, please try again");
+    }
+
 });
 
 module.exports = {
