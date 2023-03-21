@@ -235,6 +235,12 @@ const forgotPassword = asyncHandler(async (req, res) => {
     throw new Error("User does not exists")
   }
 
+  // Delete token if is exists in DB
+  let token = await Token.findOne({userId: user._id})
+  if (token) {
+    await token.deleteOne()
+  }
+
   //Create reset Token
   let resetToken = crypto.randomBytes(32).toString("hex") + user._id;
 
@@ -247,7 +253,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     token: hashedToken,
     createdAt: Date.now(),
     expiresAt: Date.now() + 30 * (60 * 1000) // 30 minutes
-  }).save()
+  }).save();
 
   // Construct Reset Url
   const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
